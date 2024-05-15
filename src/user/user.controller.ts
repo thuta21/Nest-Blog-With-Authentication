@@ -1,4 +1,10 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { Serialize } from '../interceptors/serialize.interceptors';
 import { UserDto } from './dto/user.dto';
 import { UserService } from './user.service';
@@ -11,6 +17,7 @@ import { UserEntity } from '../common/entities/user.entity';
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Get()
   @UseGuards(AuthGuard())
   async findCurrentUser(@User() { email }: UserEntity) {
