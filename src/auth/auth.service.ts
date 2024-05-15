@@ -6,15 +6,15 @@ import {
 } from '@nestjs/common';
 import { RegisterDto } from './dto/register.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User } from '../common/entities/user.entity';
+import { UserEntity } from '../common/entities/user.entity';
 import { Repository } from 'typeorm';
-import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
   constructor(
-    @InjectRepository(User) private userRepository: Repository<User>,
+    @InjectRepository(UserEntity)
+    private userRepository: Repository<UserEntity>,
     private jwtService: JwtService,
   ) {}
 
@@ -33,10 +33,9 @@ export class AuthService {
     }
   }
 
-  async login({ email, password }: LoginDto) {
+  async login(username: string, password: string): Promise<any> {
     try {
-      const user = await this.userRepository.findOne({ where: { email } });
-      console.log(user);
+      const user = await this.userRepository.findOne({ where: { username } });
       const isValid = await user.comparePassword(password);
       if (!isValid) {
         throw new UnauthorizedException('Invalid Credentials');

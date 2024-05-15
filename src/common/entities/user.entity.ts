@@ -6,7 +6,7 @@ import * as bcrypt from 'bcrypt';
 
 @Entity({ name: 'users' })
 @Unique(['email'])
-export class User extends AbstractEntity {
+export class UserEntity extends AbstractEntity {
   @Column()
   @IsEmail()
   email: string;
