@@ -3,19 +3,19 @@ import { IsEmail } from 'class-validator';
 import { Exclude, instanceToPlain } from 'class-transformer';
 import { AbstractEntity } from './abstract-entity';
 import * as bcrypt from 'bcrypt';
+import { ApiProperty } from "@nestjs/swagger";
 
 @Entity({ name: 'users' })
 @Unique(['email'])
 export class UserEntity extends AbstractEntity {
   @Column()
   @IsEmail()
+  @ApiProperty({ type: 'string', description: 'Email address' })
   email: string;
 
   @Column()
+  @ApiProperty({ type: 'string', description: 'Username' })
   username: string;
-
-  @Column({ default: '' })
-  bio: string;
 
   @Column({ default: null, nullable: true })
   image: string | null;
