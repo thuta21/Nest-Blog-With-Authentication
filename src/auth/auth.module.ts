@@ -9,12 +9,13 @@ import { jwtConstants } from './contrants';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { UserService } from '../user/user.service';
 import { LocalStrategy } from './strategy/local.strategy';
+import { ArticleEntity } from '../common/entities/article.entity';
 
 @Module({
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, UserService, LocalStrategy],
   imports: [
-    TypeOrmModule.forFeature([UserEntity]),
+    TypeOrmModule.forFeature([UserEntity, ArticleEntity]),
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,

@@ -1,9 +1,18 @@
-import { BeforeInsert, Column, Entity, Unique } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  Unique,
+} from 'typeorm';
 import { IsEmail } from 'class-validator';
 import { Exclude, instanceToPlain } from 'class-transformer';
 import { AbstractEntity } from './abstract-entity';
 import * as bcrypt from 'bcrypt';
-import { ApiProperty } from "@nestjs/swagger";
+import { ApiProperty } from '@nestjs/swagger';
+import { User } from '../../user/decorator/user.decorator';
+import { ArticleEntity } from './article.entity';
 
 @Entity({ name: 'users' })
 @Unique(['email'])
@@ -23,6 +32,9 @@ export class UserEntity extends AbstractEntity {
   @Column()
   @Exclude()
   password: string;
+
+  @OneToMany(() => ArticleEntity, (article) => article.author)
+  articles: ArticleEntity;
 
   @BeforeInsert()
   async hashPassword() {
